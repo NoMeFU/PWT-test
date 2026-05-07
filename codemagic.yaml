@@ -73,5 +73,5 @@ workflows:
 
     publishing:
       github_pages:
-        artifact_level: true
         branch: gh-pages
+
