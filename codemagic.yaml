@@ -25,23 +25,16 @@ workflows:
         script: |
           keychain initialize
           # Fetch certificates and profiles from Apple
-          app-store-connect fetch-signing-files "com.lawbug.wagetimekeeper" --project-id "$APP_STORE_CONNECT_PROJECT_ID" --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" --key-id "$APP_STORE_CONNECT_KEY_ID" --private-key "$APP_STORE_CONNECT_PRIVATE_KEY"
-          keychain add-certificates
+          # app-store-connect fetch-signing-files "com.lawbug.wagetimekeeper" --project-id "$APP_STORE_CONNECT_PROJECT_ID" --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" --key-id "$APP_STORE_CONNECT_KEY_ID" --private-key "$APP_STORE_CONNECT_PRIVATE_KEY"
+          # keychain add-certificates
       - name: Get Flutter packages
         script: |
           flutter packages pub get
       - name: Build Flutter IPA
         script: |
-          flutter build ipa --release \
-            --dart-define=APP_KEY_VALUE=$APP_KEY_VALUE \
-            --export-options-plist=/Users/builder/export_options.plist
+          flutter build ipa --release --no-codesign --dart-define=APP_KEY_VALUE=$APP_KEY_VALUE
     artifacts:
       - build/ios/ipa/*.ipa
-    publishing:
-      email:
-        recipients:
-          - YOUR_EMAIL@example.com # You can change this
-
 
   web-workflow:
     name: Web PWA Build
@@ -67,11 +60,15 @@ workflows:
       - name: Build Flutter Web
         script: |
           flutter build web --release --base-href "/PWT-test/" --dart-define=APP_KEY_VALUE=$APP_KEY_VALUE
+      - name: Publish to GitHub Pages
+        script: |
+          cd build/web
+          git init
+          git config user.name "Codemagic"
+          git config user.email "builder@codemagic.io"
+          git add .
+          git commit -m "Deploy to GitHub Pages"
+          git push --force https://nomefu:$GITHUB_TOKEN@github.com/NoMeFU/PWT-test.git master:gh-pages
 
     artifacts:
       - build/web/**
-
-    publishing:
-      github_pages:
-        branch: gh-pages
-
