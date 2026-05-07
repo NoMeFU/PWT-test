@@ -1,5 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:lawbug829/helpers/platform_helper.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -55,7 +57,7 @@ final class AutoAppUpdateUtil {
     Map<String, dynamic> body = {
       "bundle_identifier": appBundle,
       "app_version": version,
-      "platform": Platform.isAndroid ? "android" : "ios",
+      "platform": kIsWeb ? "web" : (SafePlatform.isAndroid ? "android" : "ios"),
       "environment": environment
     };
 

@@ -1,14 +1,14 @@
-// purchase_helper.dart
 import 'dart:developer';
-import 'dart:io';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:lawbug829/helpers/platform_helper.dart';
 
 final class PurchaseHelper {
   static bool isConfigured = false;
 
-  static String get _apiKey => Platform.isIOS
+  static String get _apiKey => SafePlatform.isIOS
       ? 'appl_KRGrpiexvdKwLrAnMkJCnWnXbcO' // Replace with your iOS key
       : 'goog_vTVgDDgLoAimnZzqmAEkgyOxYKH'; // Replace with your Android key
+
 
   /// Initialize RevenueCat with optional app user ID
   static Future<void> init({required String? id}) async {

@@ -2,6 +2,7 @@
 
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
+import 'package:lawbug829/helpers/platform_helper.dart';
 import 'package:lawbug829/features/attendance_screen/presentation/AttendanceScreen.dart';
 import 'package:lawbug829/features/auth/login/presentation/log_in_screen.dart';
 import 'package:lawbug829/features/auth/forget_password/presentation/forgot_password_screen.dart';
@@ -169,7 +170,7 @@ final class RouteGenerator {
     switch (settings.name) {
       // * Loading Screen
       case Routes.loadingScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: Loading(),
                 settings: settings,
@@ -181,7 +182,7 @@ final class RouteGenerator {
       // * Bottom Navigation Bar
       case Routes.bottomNavBar:
         final args = settings.arguments as Map;
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: BottomNavBar(),
                 settings: settings,
@@ -193,7 +194,7 @@ final class RouteGenerator {
       // * Attendence Screen
       case Routes.attendanceScreen:
         final Map args = settings.arguments as Map;
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: AttendanceScreen(
                   status: args['status'],
@@ -208,7 +209,7 @@ final class RouteGenerator {
 
       // * Notification Screen
       case Routes.notificationScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const NotificationScreen(), settings: settings)
             : CupertinoPageRoute(
@@ -216,7 +217,7 @@ final class RouteGenerator {
 
       // * Location Access Screen
       case Routes.locationAccessScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const LocationAccessScreen(), settings: settings)
             : CupertinoPageRoute(
@@ -224,7 +225,7 @@ final class RouteGenerator {
 
       // * Search Location Screen
       case Routes.searchLocationScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const SearchLocationScreen(), settings: settings)
             : CupertinoPageRoute(
@@ -232,7 +233,7 @@ final class RouteGenerator {
 
       case Routes.cuerrentLocationScreen:
         final Map args = settings.arguments as Map;
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: CurrentLocationScreen(
                   lat: args['lat'],
@@ -247,7 +248,7 @@ final class RouteGenerator {
 
       case Routes.registrationScreen:
         final Map args = settings.arguments as Map;
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: RegisterScreen(
                   employeeAddress: args['employeeAddress'],
@@ -267,7 +268,7 @@ final class RouteGenerator {
       // * verify Email Screen
       case Routes.verifyEmailScreen:
         final Map args = settings.arguments as Map;
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: VerifyEmailScreen(
                   email: args['email'],
@@ -279,13 +280,13 @@ final class RouteGenerator {
                     ));
 
       case Routes.loginScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const LogInScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => const LogInScreen());
 
       case Routes.forgotPasswordScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const ForgotPasswordScreen(), settings: settings)
             : CupertinoPageRoute(
@@ -293,7 +294,7 @@ final class RouteGenerator {
 
       case Routes.updateDetailsScreen:
         final Map args = settings.arguments as Map;
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: UpdateDetailsScreen(
                   data: args['data'],
@@ -312,7 +313,7 @@ final class RouteGenerator {
               );
 
       case Routes.addFacingProblemScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const AddFacingProblemScreen(), settings: settings)
             : CupertinoPageRoute(
@@ -321,7 +322,7 @@ final class RouteGenerator {
       // * Facing Problem Details Screen ==> it receive the problemId from the Problem Content Screen
       case Routes.facingProblemDetailsScreen:
         final Map args = settings.arguments as Map;
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: FacingProblemDetailsScreen(
                   problemId: args['problemId'],
@@ -345,7 +346,7 @@ final class RouteGenerator {
               );
 
       case Routes.addExpenseMoneyScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const AddExpenseMoneyScreen(), settings: settings)
             : CupertinoPageRoute(
@@ -353,7 +354,7 @@ final class RouteGenerator {
 
       case Routes.paycheckScreen:
         final Map args = settings.arguments as Map;
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: PaycheckScreen(
                   date: args['date'],
@@ -390,73 +391,73 @@ final class RouteGenerator {
               );
 
       case Routes.personalInfoScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const PersonalInformationScreen(), settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => const PersonalInformationScreen());
 
       case Routes.settingScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const SettingScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => const SettingScreen());
 
       case Routes.resetPasswordScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const ResetPasswordScreen(), settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => const ResetPasswordScreen());
 
       case Routes.aboutUsScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const AboutUsScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => const AboutUsScreen());
 
       case Routes.termsConditionScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const TermsConditionScreen(), settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => const TermsConditionScreen());
 
       case Routes.partnershipAgencyScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const PartnershipAgencyScreen(), settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => const PartnershipAgencyScreen());
 
       case Routes.addReviewScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const AddReviewScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => const AddReviewScreen());
 
       case Routes.profileNotificationScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const ProfileNotificationsScreen(), settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => const ProfileNotificationsScreen());
 
       case Routes.helpSupportScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const HelpSupportScreen(), settings: settings)
             : CupertinoPageRoute(
                 builder: (context) => const HelpSupportScreen());
 
       case Routes.addressScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const AdressScreen(), settings: settings)
             : CupertinoPageRoute(builder: (context) => const AdressScreen());
 
       case Routes.subscriptionScreen:
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: const SubscriptionScreen(), settings: settings)
             : CupertinoPageRoute(
@@ -464,7 +465,7 @@ final class RouteGenerator {
 
       case Routes.editProfileScreen:
         final Map args = settings.arguments as Map;
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: EditProfileScreen(
                   employeeId: args['employeeId'],
@@ -490,7 +491,7 @@ final class RouteGenerator {
       // * Notification Screen
       case Routes.expenseDetailsScreen:
         final Map args = settings.arguments as Map;
-        return Platform.isAndroid
+        return SafePlatform.isAndroid
             ? _FadedTransitionRoute(
                 widget: ExpanseDetailsReport(
                     ammount: args['ammount'],

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:lawbug829/helpers/platform_helper.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -153,11 +154,11 @@ Future<void> setInitValue() async {
   if (kIsWeb) {
     // For web, we can use a generic ID or leave it empty
     await appData.writeIfNull(kKeyDeviceID, 'web_device');
-  } else if (Platform.isIOS) {
+  } else if (SafePlatform.isIOS) {
     var iosDeviceInfo = await deviceInfo.iosInfo;
     appData.writeIfNull(
         kKeyDeviceID, iosDeviceInfo.identifierForVendor); // unique ID on iOS
-  } else if (Platform.isAndroid) {
+  } else if (SafePlatform.isAndroid) {
     var androidDeviceInfo =
         await deviceInfo.androidInfo; // unique ID on Android
     appData.writeIfNull(kKeyDeviceID, androidDeviceInfo.id);
@@ -367,9 +368,9 @@ void showMaterialDialog(
                   onCallBack: () {
                     if (kIsWeb) {
                       // Browser close not supported, maybe navigate back or show a message
-                    } else if (Platform.isAndroid) {
+                    } else if (SafePlatform.isAndroid) {
                       SystemNavigator.pop();
-                    } else if (Platform.isIOS) {
+                    } else if (SafePlatform.isIOS) {
                       exit(0);
                     }
                   },
