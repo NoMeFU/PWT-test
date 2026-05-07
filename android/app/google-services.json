@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "755247727348",
+    "project_id": "prevailing-wage-timekeeper",
+    "storage_bucket": "prevailing-wage-timekeeper.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:755247727348:android:a5d97462f46c02a7dc14a1",
+        "android_client_info": {
+          "package_name": "com.lawbug.wagetimekeeper"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "755247727348-rhkrua0ujtl6du5jfgp140kri7s1acpj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lawbug.wagetimekeeper",
+            "certificate_hash": "20721349b61c2ba23c03e215ea2955cea66bac35"
+          }
+        },
+        {
+          "client_id": "755247727348-tnhk496ns9pthr8kuj4n1ski4avaj3e3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.lawbug.wagetimekeeper",
+            "certificate_hash": "e21fa8fad30719c5bd53737cff1cadf0b52db25d"
+          }
+        },
+        {
+          "client_id": "755247727348-bamdml8ppjl8ir6do5sm56f388kaiflu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5DwzmYyePrrIPeRRVu2bKFM7cbAX4z2I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "755247727348-bamdml8ppjl8ir6do5sm56f388kaiflu.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "755247727348-28gu07q1t92hha4jfh9io40g9kt5sp3l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.lawbug829.wagetimekeeper"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

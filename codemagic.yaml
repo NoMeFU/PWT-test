@@ -1,0 +1,50 @@
+workflows:
+  ios-workflow:
+    name: iOS TestFlight Build
+    instance_type: mac_mini_m1
+    max_build_duration: 60
+    environment:
+      groups:
+        - app_store_credentials # Create this group in Codemagic UI
+      vars:
+        XCODE_WORKSPACE: "Runner.xcworkspace"
+        XCODE_SCHEME: "Runner"
+        APP_KEY_VALUE: "default_app_key_here" # You can override this in Codemagic UI
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+
+    triggering:
+      events:
+        - push
+      branch_patterns:
+        - pattern: 'main'
+          include: true
+          source: true
+
+    scripts:
+      - name: Set up code signing
+        script: |
+          keychain initialize
+          # Fetch certificates and profiles from Apple
+          app-store-connect fetch-signing-files "com.lawbug.wagetimekeeper" --project-id "$APP_STORE_CONNECT_PROJECT_ID" --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" --key-id "$APP_STORE_CONNECT_KEY_ID" --private-key "$APP_STORE_CONNECT_PRIVATE_KEY"
+          keychain add-certificates
+      - name: Get Flutter packages
+        script: |
+          flutter packages pub get
+      - name: Build Flutter IPA
+        script: |
+          flutter build ipa --release \
+            --dart-define=APP_KEY_VALUE=$APP_KEY_VALUE \
+            --export-options-plist=/Users/builder/export_options.plist
+    artifacts:
+      - build/ios/ipa/*.ipa
+    publishing:
+      app_store_connect:
+        auth: integration
+        # Codemagic integration with App Store Connect should be configured in UI
+        # or use variables from the environment group
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_ID
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true

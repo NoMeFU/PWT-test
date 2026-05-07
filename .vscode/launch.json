@@ -1,0 +1,44 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "PWT (Chrome)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "chrome",
+      "toolArgs": [
+        "--dart-define",
+        "APP_KEY_VALUE=default_app_key_here"
+      ]
+    },
+    {
+      "name": "PWT (Windows)",
+      "request": "launch",
+      "type": "dart",
+      "deviceId": "windows",
+      "toolArgs": [
+        "--dart-define",
+        "APP_KEY_VALUE=default_app_key_here"
+      ]
+    },
+    {
+      "name": "PWT (Debug with App-Key)",
+      "request": "launch",
+      "type": "dart",
+      "toolArgs": [
+        "--dart-define",
+        "APP_KEY_VALUE=default_app_key_here"
+      ]
+    },
+    {
+      "name": "PWT (Release)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "toolArgs": [
+        "--dart-define",
+        "APP_KEY_VALUE=default_app_key_here"
+      ]
+    }
+  ]
+}
