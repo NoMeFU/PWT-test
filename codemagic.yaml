@@ -71,7 +71,8 @@ workflows:
           git config user.email "builder@codemagic.io"
           git add .
           git commit -m "Deploy to GitHub Pages"
-          git push --force https://nomefu:$GITHUB_TOKEN@github.com/NoMeFU/PWT-test.git master:gh-pages
+          git push --force https://$GITHUB_TOKEN@github.com/NoMeFU/PWT-test.git master:gh-pages
+
 
     artifacts:
       - build/web/**
