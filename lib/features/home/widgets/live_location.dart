@@ -159,6 +159,7 @@ class _LiveLocationState extends State<LiveLocation> {
       // Get current position
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
+        timeLimit: const Duration(seconds: 10),
       );
 
       setState(() {
@@ -179,6 +180,12 @@ class _LiveLocationState extends State<LiveLocation> {
     if (_latitude == null || _longitude == null) return;
 
     try {
+      if (kIsWeb) {
+        setState(() {
+          _locationName = "${_latitude!.toStringAsFixed(2)}, ${_longitude!.toStringAsFixed(2)}";
+        });
+        return;
+      }
       List<Placemark> placemarks = await placemarkFromCoordinates(
         _latitude!,
         _longitude!,

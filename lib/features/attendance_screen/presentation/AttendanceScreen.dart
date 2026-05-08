@@ -108,6 +108,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       // * Get the current location
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
+        timeLimit: const Duration(seconds: 10),
       );
 
       // * Get current time in HH:mm:ss format
