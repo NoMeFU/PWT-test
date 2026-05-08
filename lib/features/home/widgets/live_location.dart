@@ -185,23 +185,32 @@ class _LiveLocationState extends State<LiveLocation> {
     try {
       if (kIsWeb) {
         try {
+          // Use a slightly different approach for web requests
           const apiKey = 'AIzaSyDmNO0nvvAkkxk6rYBDQEfVXVQPB9rKlsk';
           final url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$_latitude,$_longitude&key=$apiKey';
-          final response = await Dio().get(url);
-          if (response.statusCode == 200) {
+          
+          final response = await Dio().get(
+            url,
+            options: Options(
+              headers: {
+                'Accept': 'application/json',
+              },
+            ),
+          );
+          
+          if (response.statusCode == 200 && response.data['status'] == 'OK') {
             final results = response.data['results'];
             if (results.isNotEmpty) {
               setState(() {
-                // Try to find the city (locality)
-                var addressComponents = results[0]['address_components'] as List;
-                var cityComponent = addressComponents.firstWhere(
-                  (c) => (c['types'] as List).contains('locality'),
-                  orElse: () => null
-                );
-                
-                _locationName = cityComponent != null 
-                    ? cityComponent['long_name'] 
-                    : results[0]['formatted_address'].split(',')[0];
+                String? city;
+                for (var component in results[0]['address_components']) {
+                  final types = List<String>.from(component['types']);
+                  if (types.contains('locality') || types.contains('administrative_area_level_2')) {
+                    city = component['long_name'];
+                    break;
+                  }
+                }
+                _locationName = city ?? results[0]['formatted_address'].split(',')[0];
               });
               return;
             }
@@ -209,6 +218,7 @@ class _LiveLocationState extends State<LiveLocation> {
         } catch (e) {
           if (kDebugMode) print("Web geocoding failed: $e");
         }
+
         setState(() {
           _locationName = "${_latitude!.toStringAsFixed(2)}, ${_longitude!.toStringAsFixed(2)}";
         });
