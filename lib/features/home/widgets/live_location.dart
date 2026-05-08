@@ -185,18 +185,10 @@ class _LiveLocationState extends State<LiveLocation> {
     try {
       if (kIsWeb) {
         try {
-          // Use a slightly different approach for web requests
+          // 1. Try Google Maps API first
           const apiKey = 'AIzaSyDmNO0nvvAkkxk6rYBDQEfVXVQPB9rKlsk';
           final url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$_latitude,$_longitude&key=$apiKey';
-          
-          final response = await Dio().get(
-            url,
-            options: Options(
-              headers: {
-                'Accept': 'application/json',
-              },
-            ),
-          );
+          final response = await Dio().get(url);
           
           if (response.statusCode == 200 && response.data['status'] == 'OK') {
             final results = response.data['results'];
@@ -205,7 +197,7 @@ class _LiveLocationState extends State<LiveLocation> {
                 String? city;
                 for (var component in results[0]['address_components']) {
                   final types = List<String>.from(component['types']);
-                  if (types.contains('locality') || types.contains('administrative_area_level_2')) {
+                  if (types.contains('locality')) {
                     city = component['long_name'];
                     break;
                   }
@@ -215,9 +207,25 @@ class _LiveLocationState extends State<LiveLocation> {
               return;
             }
           }
+          
+          // 2. Plan B: OpenStreetMap (Nominatim) - no key required
+          final nominatimUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=$_latitude&lon=$_longitude&zoom=10&addressdetails=1';
+          final osmResponse = await Dio().get(
+            nominatimUrl,
+            options: Options(headers: {'User-Agent': 'PWT-App-Web'}),
+          );
+          
+          if (osmResponse.statusCode == 200) {
+            final address = osmResponse.data['address'];
+            setState(() {
+              _locationName = address['city'] ?? address['town'] ?? address['village'] ?? address['state'] ?? "Unknown";
+            });
+            return;
+          }
         } catch (e) {
-          if (kDebugMode) print("Web geocoding failed: $e");
+          if (kDebugMode) print("Web geocoding fallbacks failed: $e");
         }
+
 
         setState(() {
           _locationName = "${_latitude!.toStringAsFixed(2)}, ${_longitude!.toStringAsFixed(2)}";
