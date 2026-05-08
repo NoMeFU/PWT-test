@@ -62,7 +62,7 @@ workflows:
           flutter packages pub get
       - name: Build Flutter Web
         script: |
-          flutter build web --release --base-href "/PWT-test/" --dart-define=APP_KEY_VALUE=$APP_KEY_VALUE
+          flutter build web --release --base-href "/PWT-test/" --web-renderer html --dart-define=APP_KEY_VALUE=$APP_KEY_VALUE
       - name: Publish to GitHub Pages
         script: |
           cd build/web
