@@ -268,6 +268,10 @@ class _CurrentLocationScreenState extends State<CurrentLocationScreen> {
 
   Future<void> _getPlaceNameFast(double lat, double lng) async {
     try {
+      if (kIsWeb) {
+         // Skip local geocoding on web as it is not supported
+         throw Exception("Web platform: skipping local geocoding");
+      }
       // 🔹 Try local geocoding first (much faster)
       List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
 

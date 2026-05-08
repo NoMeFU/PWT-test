@@ -62,7 +62,8 @@ class _LocationAccessScreenState extends State<LocationAccessScreen> {
 
       // Step 3: Get current location
       Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
+          desiredAccuracy: LocationAccuracy.high,
+          timeLimit: const Duration(seconds: 15));
 
       setState(() => _isLoading = false);
 
