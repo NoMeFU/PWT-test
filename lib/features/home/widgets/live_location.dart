@@ -107,6 +107,8 @@
 //   }
 // }
 
+import 'dart:convert';
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -182,6 +184,31 @@ class _LiveLocationState extends State<LiveLocation> {
 
     try {
       if (kIsWeb) {
+        try {
+          const apiKey = 'AIzaSyDmNO0nvvAkkxk6rYBDQEfVXVQPB9rKlsk';
+          final url = 'https://maps.googleapis.com/maps/api/geocode/json?latlng=$_latitude,$_longitude&key=$apiKey';
+          final response = await Dio().get(url);
+          if (response.statusCode == 200) {
+            final results = response.data['results'];
+            if (results.isNotEmpty) {
+              setState(() {
+                // Try to find the city (locality)
+                var addressComponents = results[0]['address_components'] as List;
+                var cityComponent = addressComponents.firstWhere(
+                  (c) => (c['types'] as List).contains('locality'),
+                  orElse: () => null
+                );
+                
+                _locationName = cityComponent != null 
+                    ? cityComponent['long_name'] 
+                    : results[0]['formatted_address'].split(',')[0];
+              });
+              return;
+            }
+          }
+        } catch (e) {
+          if (kDebugMode) print("Web geocoding failed: $e");
+        }
         setState(() {
           _locationName = "${_latitude!.toStringAsFixed(2)}, ${_longitude!.toStringAsFixed(2)}";
         });
