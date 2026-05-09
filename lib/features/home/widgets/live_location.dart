@@ -224,7 +224,7 @@ class _LiveLocationState extends State<LiveLocation> {
             final displayName = data['display_name'];
             
             setState(() {
-              // Try to get a concise location name
+              // Priority: City -> Town -> Village -> Suburb -> First part of display name
               _locationName = address['city'] ?? 
                              address['town'] ?? 
                              address['village'] ?? 

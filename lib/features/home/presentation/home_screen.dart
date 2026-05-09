@@ -88,13 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
           final displayName = data['display_name'];
           final address = data['address'];
           
-          // Use a slightly more concise but readable address for the list
+          // Only show the city/town/village info as requested
           String cityInfo = address['city'] ?? address['town'] ?? address['village'] ?? address['suburb'] ?? "";
-          String fullText = displayName ?? "Unknown";
-          
-          final result = cityInfo.isNotEmpty 
-              ? "$cityInfo, ${fullText.split(',').skip(1).take(2).join(',')}" 
-              : fullText;
+          String result = cityInfo.isNotEmpty ? cityInfo : (displayName != null ? displayName.split(',')[0] : "Unknown");
 
           _locationCache[cacheKey] = result;
           return result;
