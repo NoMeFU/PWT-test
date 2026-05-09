@@ -331,10 +331,6 @@ void loginWithSocialMedia(String driver) async {
   }
 }
 
-Future<File> getLocalFile(String filename) async {
-  File f = File(filename);
-  return f;
-}
 
 void showMaterialDialog(
   BuildContext context,
@@ -370,7 +366,9 @@ void showMaterialDialog(
                     } else if (SafePlatform.isAndroid) {
                       SystemNavigator.pop();
                     } else if (SafePlatform.isIOS) {
-                      exit(0);
+                      if (!kIsWeb) {
+                        SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+                      }
                     }
                   },
                   height: 30.sp,
