@@ -65,8 +65,8 @@ class CheckInData {
     userId = json['user_id'];
     role = json['role'];
     currentLocation = json['current_location'];
-    lat = json['lat'] is String ? double.tryParse(json['lat']) : (json['lat'] as num?)?.toDouble();
-    long = json['long'] is String ? double.tryParse(json['long']) : (json['long'] as num?)?.toDouble();
+    lat = json['lat'] is String ? double.tryParse(json['lat'] as String) : (json['lat'] as num?)?.toDouble();
+    long = json['long'] is String ? double.tryParse(json['long'] as String) : (json['long'] as num?)?.toDouble();
     status = json['status'];
     date = json['date'];
     checkIn = json['check_in'];

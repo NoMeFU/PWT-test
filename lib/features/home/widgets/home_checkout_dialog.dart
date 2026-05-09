@@ -228,4 +228,5 @@ class CustomTextFormFieldMax extends StatelessWidget {
       minLines: 5,
       maxLines: 5,
     );
+  }
 }

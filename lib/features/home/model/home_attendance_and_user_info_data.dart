@@ -81,8 +81,8 @@ class Attendance {
     checkIn: json["check_in"],
     checkOut: json["check_out"],
     totalHours: json["total_hours"],
-    lat: json["lat"] is String ? double.tryParse(json["lat"]) : (json["lat"] as num?)?.toDouble(),
-    long: json["long"] is String ? double.tryParse(json["long"]) : (json["long"] as num?)?.toDouble(),
+    lat: json["lat"] is String ? double.tryParse(json["lat"] as String) : (json["lat"] as num?)?.toDouble(),
+    long: json["long"] is String ? double.tryParse(json["long"] as String) : (json["long"] as num?)?.toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
