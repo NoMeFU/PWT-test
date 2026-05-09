@@ -81,9 +81,23 @@ class _HomeScreenState extends State<HomeScreen> {
         );
         
         if (osmResponse.statusCode == 200) {
-          final displayName = osmResponse.data['display_name'];
-          _locationCache[cacheKey] = displayName ?? "Unknown";
-          return displayName;
+          var data = osmResponse.data;
+          if (data is String) {
+            data = json.decode(data);
+          }
+          final displayName = data['display_name'];
+          final address = data['address'];
+          
+          // Use a slightly more concise but readable address for the list
+          String cityInfo = address['city'] ?? address['town'] ?? address['village'] ?? address['suburb'] ?? "";
+          String fullText = displayName ?? "Unknown";
+          
+          final result = cityInfo.isNotEmpty 
+              ? "$cityInfo, ${fullText.split(',').skip(1).take(2).join(',')}" 
+              : fullText;
+
+          _locationCache[cacheKey] = result;
+          return result;
         }
       }
       

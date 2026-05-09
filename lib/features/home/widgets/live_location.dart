@@ -209,16 +209,27 @@ class _LiveLocationState extends State<LiveLocation> {
           }
           
           // 2. Plan B: OpenStreetMap (Nominatim) - no key required
-          final nominatimUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=$_latitude&lon=$_longitude&zoom=10&addressdetails=1';
+          final nominatimUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=$_latitude&lon=$_longitude&zoom=18&addressdetails=1';
           final osmResponse = await Dio().get(
             nominatimUrl,
             options: Options(headers: {'User-Agent': 'PWT-App-Web'}),
           );
           
           if (osmResponse.statusCode == 200) {
-            final address = osmResponse.data['address'];
+            var data = osmResponse.data;
+            if (data is String) {
+              data = json.decode(data);
+            }
+            final address = data['address'];
+            final displayName = data['display_name'];
+            
             setState(() {
-              _locationName = address['city'] ?? address['town'] ?? address['village'] ?? address['state'] ?? "Unknown";
+              // Try to get a concise location name
+              _locationName = address['city'] ?? 
+                             address['town'] ?? 
+                             address['village'] ?? 
+                             address['suburb'] ??
+                             (displayName != null ? displayName.split(',')[0] : "Unknown");
             });
             return;
           }
