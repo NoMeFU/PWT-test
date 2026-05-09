@@ -1,8 +1,9 @@
 // ignore_for_file: unused_local_variable
 
 import 'dart:developer';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
+import 'package:lawbug829/helpers/image_helper.dart';
+import 'package:lawbug829/helpers/platform_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,7 +35,7 @@ class _AddExpenseMoneyScreenState extends State<AddExpenseMoneyScreen> {
   final _dateController = TextEditingController();
   final _locationController = TextEditingController();
   final descriptionController = TextEditingController();
-  File? _pickedImage;
+  XFile? _pickedImage;
   final ImagePicker _picker = ImagePicker();
   final _formKey = GlobalKey<FormState>(); // Added for form validation
 
@@ -58,7 +59,7 @@ class _AddExpenseMoneyScreenState extends State<AddExpenseMoneyScreen> {
         await _picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
       setState(() {
-        _pickedImage = File(pickedFile.path);
+        _pickedImage = pickedFile;
       });
     }
   }
@@ -69,7 +70,7 @@ class _AddExpenseMoneyScreenState extends State<AddExpenseMoneyScreen> {
     });
   }
 
-  void _openImageViewer(File imageFile) {
+  void _openImageViewer(XFile imageFile) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -79,7 +80,7 @@ class _AddExpenseMoneyScreenState extends State<AddExpenseMoneyScreen> {
             children: [
               Center(
                 child: PhotoView(
-                  imageProvider: FileImage(imageFile),
+                  imageProvider: getPlatformImageProvider(imageFile.path),
                   backgroundDecoration:
                       const BoxDecoration(color: Colors.black),
                 ),
@@ -356,12 +357,19 @@ class _AddExpenseMoneyScreenState extends State<AddExpenseMoneyScreen> {
                                         _openImageViewer(_pickedImage!),
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.circular(8.r),
-                                      child: Image.file(
-                                        _pickedImage!,
-                                        width: double.infinity,
-                                        height: 200.h,
-                                        fit: BoxFit.cover,
-                                      ),
+                                      child: kIsWeb 
+                                          ? Image.network(
+                                              _pickedImage!.path,
+                                              width: double.infinity,
+                                              height: 200.h,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image(
+                                              image: getPlatformImageProvider(_pickedImage!.path),
+                                              width: double.infinity,
+                                              height: 200.h,
+                                              fit: BoxFit.cover,
+                                            ),
                                     ),
                                   ),
                                   Positioned(

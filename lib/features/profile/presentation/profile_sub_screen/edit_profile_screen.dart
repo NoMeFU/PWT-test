@@ -2,7 +2,9 @@
 // ignore_for_file: unused_field, prefer_final_fields, must_be_immutable
 
 import 'dart:developer';
-import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:lawbug829/helpers/image_helper.dart';
+import 'package:lawbug829/helpers/platform_helper.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -86,7 +88,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String _selectedCountryCode = '+880'; // default or fallback
 
   // * Image variable
-  File? _pickedImage;
+  XFile? _pickedImage;
 
   @override
   void dispose() {
@@ -133,7 +135,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     CircleAvatar(
                       radius: 50.r,
                       backgroundImage: _pickedImage != null
-                          ? FileImage(_pickedImage!)
+                          ? getPlatformImageProvider(_pickedImage!.path)
                           : AssetImage(Appimages.profileImage) as ImageProvider,
                     ),
                     Positioned(
@@ -174,7 +176,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                           if (pickedFile != null) {
                             setState(() {
-                              _pickedImage = File(pickedFile.path);
+                              _pickedImage = pickedFile;
                             });
                           }
                         },

@@ -1,5 +1,6 @@
 import 'dart:developer';
-import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:lawbug829/helpers/platform_helper.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -654,7 +655,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             ),
                           ),
 
-                          if (Platform.isIOS) ...[
+                          if (SafePlatform.isIOS) ...[
                             const SizedBox(width: 5),
                             InkWell(
                               onTap: () async {

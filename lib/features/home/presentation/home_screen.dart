@@ -22,6 +22,8 @@ import 'package:lawbug829/helpers/toast.dart';
 import 'package:lawbug829/helpers/ui_helpers.dart';
 import 'package:lawbug829/networks/api_acess.dart';
 import 'package:lottie/lottie.dart';
+import 'package:flutter/foundation.dart';
+import 'package:dio/dio.dart';
 import '../widgets/home_checkout_dialog.dart';
 
 class HomeScreen extends StatefulWidget {

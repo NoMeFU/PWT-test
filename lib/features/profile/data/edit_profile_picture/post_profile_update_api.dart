@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:lawbug829/helpers/dio_helper.dart';
 import 'package:dio/dio.dart';
 import 'package:lawbug829/helpers/toast.dart';
 import 'package:lawbug829/networks/dio/dio.dart';
@@ -12,15 +13,11 @@ final class PostImageUploadApi {
   static PostImageUploadApi get instance => _singleton;
 
   Future<Map<String, dynamic>> uploadImageApi({
-    required File avatar,
+    required XFile avatar,
   }) async {
     try {
-      if (!await avatar.exists()) {
-        throw Exception("File does not exist at path: ${avatar.path}");
-      }
-
       FormData data = FormData.fromMap({
-        "avatar": await MultipartFile.fromFile(avatar.path),
+        "avatar": await getMultipartFile(avatar),
       });
 
       Response response = await postHttp(Endpoints.postImageUploadApi(), data);

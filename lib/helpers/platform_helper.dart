@@ -1,8 +1,2 @@
-import 'dart:io';
-import 'package:flutter/foundation.dart';
-
-class SafePlatform {
-  static bool get isAndroid => !kIsWeb && Platform.isAndroid;
-  static bool get isIOS => !kIsWeb && Platform.isIOS;
-  static bool get isWeb => kIsWeb;
-}
+export 'platform_helper_web.dart' 
+    if (dart.library.io) 'platform_helper_io.dart';

@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, unused_local_variable, avoid_print
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:lawbug829/helpers/platform_helper.dart';
 import 'package:device_info_plus/device_info_plus.dart';

@@ -55,7 +55,8 @@ import 'package:dio/dio.dart';
 import 'package:lawbug829/helpers/toast.dart';
 import 'package:lawbug829/networks/dio/dio.dart';
 import 'package:lawbug829/networks/endpoints.dart';
-import 'package:lawbug829/networks/exception_handler/data_source.dart';
+import 'package:lawbug829/helpers/dio_helper.dart';
+import 'package:image_picker/image_picker.dart';
 
 final class PostExpenseApi {
   static final PostExpenseApi _singleton = PostExpenseApi._internal();
@@ -82,9 +83,7 @@ final class PostExpenseApi {
         'payment_method': payment_method,
         'location': location,
         'description': description,
-        'file': await MultipartFile.fromFile(
-          file.path,
-        ), // Convert file to MultipartFile
+        'file': await getMultipartFile(file), // Convert file to MultipartFile
       });
 
       // * Make the POST request with multipart/form-data

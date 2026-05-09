@@ -1,5 +1,5 @@
 import 'dart:developer';
-import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 import 'package:dio/dio.dart';
 import 'package:lawbug829/features/profile/data/edit_profile_picture/post_profile_update_api.dart';
 import 'package:lawbug829/helpers/toast.dart';
@@ -14,7 +14,7 @@ final class PostImageUploadRx extends RxResponseInt<Map<String, dynamic>> {
   ValueStream get getFileData => dataFetcher.stream;
 
   Future<bool> uploadImageApi({
-    required File avatar,
+    required XFile avatar,
   }) async {
     try {
       Map<String, dynamic> data = await api.uploadImageApi(
