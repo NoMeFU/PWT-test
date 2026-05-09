@@ -64,7 +64,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
+      firstDate: DateTime(1940),
       lastDate: DateTime(2100),
     );
     if (pickedDate != null) {
@@ -319,7 +319,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
                           color: AppColors.cFF8E21,
-                          width: 2,
                         ),
                       ),
                       child: Lottie.asset(

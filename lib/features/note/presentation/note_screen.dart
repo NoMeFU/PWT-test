@@ -281,16 +281,7 @@ class CustomTextFormFieldMax extends StatelessWidget {
           minLines: 5,
           maxLines: 5,
         ),
-        Positioned(
-          top: 90.h,
-          right: 12.w,
-          child: Image.asset(
-            Assets.images.suffixImage.path,
-            width: 20.w,
-            height: 20.h,
-            fit: BoxFit.contain,
-          ),
-        ),
+        // Image removed to prevent focus issues on web
       ],
     );
   }

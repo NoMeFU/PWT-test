@@ -70,6 +70,21 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     try {
+      if (kIsWeb) {
+        // Plan B: OpenStreetMap (Nominatim) - no key required
+        final nominatimUrl = 'https://nominatim.openstreetmap.org/reverse?format=json&lat=$latitude&lon=$longitude&zoom=18&addressdetails=1';
+        final osmResponse = await Dio().get(
+          nominatimUrl,
+          options: Options(headers: {'User-Agent': 'PWT-App-Web'}),
+        );
+        
+        if (osmResponse.statusCode == 200) {
+          final displayName = osmResponse.data['display_name'];
+          _locationCache[cacheKey] = displayName ?? "Unknown";
+          return displayName;
+        }
+      }
+      
       List<Placemark> placemarks =
           await placemarkFromCoordinates(latitude, longitude);
       if (placemarks.isNotEmpty) {
@@ -80,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
         return address;
       }
     } catch (e) {
-      print(e);
+      if (kDebugMode) print("Geocoding failed: $e");
     }
     return null;
   }
@@ -607,7 +622,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       return Center(
                           child: Column(
                         children: [
-                          Image.asset(Appimages.sadIcon),
+                          Image.asset(
+                                Appimages.sadIcon,
+                                height: 100.h,
+                                width: 100.w,
+                              ),
                         ],
                       ));
                     } else {

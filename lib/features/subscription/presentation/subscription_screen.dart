@@ -102,6 +102,20 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   ),
                 ),
                 UIHelper.verticalSpace(5.h),
+                UIHelper.verticalSpace(5.h),
+                if (kIsWeb) ...[
+                  customeButton(
+                    name: "DEBUG: Grant Web Access",
+                    color: Colors.green,
+                    context: context,
+                    onCallBack: () async {
+                      await appData.write(kKeyIsSubscribed, true);
+                      Get.offAll(() => const Loading());
+                      ToastUtil.showLongToast("Web Access Granted for Testing");
+                    },
+                  ),
+                  UIHelper.verticalSpace(10.h),
+                ],
                 UIHelper.customDivider(color: AppColors.cDFE3E8),
                 UIHelper.verticalSpace(5.h),
                 Consumer<PurchaseProvider>(builder: (context, p, _) {

@@ -41,7 +41,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
             message: 'Your report is ready to download',
             timeAgo: '2d ago',
           ),
-          // Add more dummy notifications if you want
         ];
       });
     });
