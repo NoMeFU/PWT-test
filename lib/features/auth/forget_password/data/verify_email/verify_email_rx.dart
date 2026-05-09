@@ -53,13 +53,15 @@ final class PostVerifyEmailApiRX extends RxResponseInt<Map<String, dynamic>> {
 
   @override
   bool handleErrorWithReturn(error) {
-    try {
-      DioException exception = error as DioException;
-
-      final responseData = exception.response?.data;
-      String msg = responseData['message'];
-      ToastUtil.showShortToast(msg);
-    } catch (e) {
+    if (error is DioException) {
+      try {
+        final responseData = error.response?.data;
+        String msg = responseData['message'] ?? "Something went wrong ✖";
+        ToastUtil.showShortToast(msg);
+      } catch (e) {
+        ToastUtil.showShortToast('Something went wrong ✖');
+      }
+    } else {
       ToastUtil.showShortToast('Something went wrong ✖');
     }
     log(error.runtimeType.toString());

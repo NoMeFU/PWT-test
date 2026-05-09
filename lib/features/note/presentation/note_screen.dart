@@ -49,39 +49,33 @@ class _NoteScreenState extends State<NoteScreen>
           padding: EdgeInsets.symmetric(horizontal: 16.w),
           child: Column(
             children: [
-              // UIHelper.verticalSpace(24.h),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: [
-              //     CustomTabWidget(
-              //       label: 'Daily Update',
-              //       isSelected: _currentIndex == 0,
-              //       onTap: () {
-              //         _buildShowDialog(context);
-              //       },
-              //       horizontalPadding: 4.w,
-              //     ),
-              //     CustomTabWidget(
-              //       label: 'Facing Problem',
-              //       isSelected: _currentIndex == 1,
-              //       onTap: () {
-              //         //_tabController.animateTo(1);
-              //         NavigationService.navigateTo(
-              //           Routes.addFacingProblemScreen,
-              //         );
-              //       },
-              //       horizontalPadding: 4.w,
-              //     ),
-              //   ],
-              // ),
-              Expanded(
-                child: TabBarView(
-                  controller: _tabController,
-                  children: const [
-                    ProblemListScreen(),
-                    ProblemListScreen(),
-                  ],
-                ),
+              UIHelper.verticalSpace(24.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  CustomTabWidget(
+                    label: 'Daily Update',
+                    isSelected: _currentIndex == 0,
+                    onTap: () {
+                      _buildShowDialog(context);
+                    },
+                    horizontalPadding: 4.w,
+                  ),
+                  CustomTabWidget(
+                    label: 'Facing Problem',
+                    isSelected: _currentIndex == 1,
+                    onTap: () {
+                      //_tabController.animateTo(1);
+                      NavigationService.navigateTo(
+                        Routes.addFacingProblemScreen,
+                      );
+                    },
+                    horizontalPadding: 4.w,
+                  ),
+                ],
+              ),
+              const Expanded(
+                child: ProblemListScreen(),
               )
             ],
           ),

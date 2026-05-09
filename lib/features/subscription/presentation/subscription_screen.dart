@@ -125,6 +125,27 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 UIHelper.verticalSpace(5.h),
                 Consumer<PurchaseProvider>(builder: (context, p, _) {
                   if (p.packages.isEmpty) {
+                    if (kIsWeb) {
+                      return Padding(
+                        padding: EdgeInsets.symmetric(vertical: 40.h),
+                        child: Column(
+                          children: [
+                            const Icon(Icons.shopping_bag_outlined, size: 64, color: Colors.grey),
+                            UIHelper.verticalSpace(16.h),
+                            Text(
+                              "Subscription Plans (Mobile Only)",
+                              style: TextFontStyle.headline20c212B36stylepoppinsW500.copyWith(fontSize: 16.sp),
+                            ),
+                            UIHelper.verticalSpace(8.h),
+                            Text(
+                              "Use the 'Grant Web Access' button above to test PWA features.",
+                              textAlign: TextAlign.center,
+                              style: TextFontStyle.headline16c919EABstylepoppinsW400.copyWith(fontSize: 13.sp),
+                            ),
+                          ],
+                        ),
+                      );
+                    }
                     return const Center(child: CircularProgressIndicator());
                   }
                   log("Monthly Plan:-${p.packages.first.storeProduct.title}\n");
