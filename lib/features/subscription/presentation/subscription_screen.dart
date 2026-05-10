@@ -24,7 +24,6 @@ import 'package:lawbug829/helpers/toast.dart';
 import 'package:lawbug829/helpers/ui_helpers.dart';
 import 'package:lawbug829/loading_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SubscriptionScreen extends StatefulWidget {
@@ -155,13 +154,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   final monthlyPkg = pkgs.first;
                   final yearlyPkg = pkgs.last;
 
-                  final String mTitle = isMock ? monthlyPkg['title'] : (monthlyPkg as Package).storeProduct.title;
-                  final String mPrice = isMock ? monthlyPkg['price'] : (monthlyPkg as Package).storeProduct.priceString;
-                  final String mDesc = isMock ? monthlyPkg['description'] : (monthlyPkg as Package).storeProduct.description;
+                  final String mTitle = isMock ? monthlyPkg['title'] : monthlyPkg.storeProduct.title;
+                  final String mPrice = isMock ? monthlyPkg['price'] : monthlyPkg.storeProduct.priceString;
+                  final String mDesc = isMock ? monthlyPkg['description'] : monthlyPkg.storeProduct.description;
 
-                  final String yTitle = isMock ? yearlyPkg['title'] : (yearlyPkg as Package).storeProduct.title;
-                  final String yPrice = isMock ? yearlyPkg['price'] : (yearlyPkg as Package).storeProduct.priceString;
-                  final String yDesc = isMock ? yearlyPkg['description'] : (yearlyPkg as Package).storeProduct.description;
+                  final String yTitle = isMock ? yearlyPkg['title'] : yearlyPkg.storeProduct.title;
+                  final String yPrice = isMock ? yearlyPkg['price'] : yearlyPkg.storeProduct.priceString;
+                  final String yDesc = isMock ? yearlyPkg['description'] : yearlyPkg.storeProduct.description;
 
                   return Column(
                     children: [
