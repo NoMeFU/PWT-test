@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:lawbug829/constants/app_constants.dart';
 import 'package:lawbug829/helpers/di.dart';
 import 'package:lawbug829/helpers/toast.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:purchases_flutter/purchases_flutter.dart' if (dart.library.html) 'purchases_stub.dart';
 
 class PurchaseProvider extends ChangeNotifier {
   dynamic _purchaserInfo;

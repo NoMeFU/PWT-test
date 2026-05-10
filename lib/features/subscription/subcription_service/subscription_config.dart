@@ -1,6 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/foundation.dart'; // Added for kIsWeb
-import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:purchases_flutter/purchases_flutter.dart' if (dart.library.html) 'purchases_stub.dart';
 import 'package:lawbug829/helpers/platform_helper.dart';
 
 final class PurchaseHelper {
