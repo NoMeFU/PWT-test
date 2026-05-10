@@ -139,6 +139,9 @@ class _LiveLocationState extends State<LiveLocation> {
   }
 
   Future<void> _getCurrentLocation() async {
+    setState(() {
+      _locationName = 'Locating...';
+    });
     try {
       // Check location permission
       LocationPermission permission = await Geolocator.checkPermission();
@@ -267,50 +270,61 @@ class _LiveLocationState extends State<LiveLocation> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 160.w,
-      padding:
-          EdgeInsets.only(left: 14.w, top: 17.h, bottom: 11.h, right: 20.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.r),
-        color: AppColors.cFFF4E9,
-      ),
-      child: Row(
-        children: [
-          SvgPicture.asset(Assets.icons.locationOrangeLawbug),
-          UIHelper.horizontalSpace(7.w),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
+    return GestureDetector(
+      onTap: () {
+        if (_locationName.contains('Denied') || _locationName.contains('Error') || _locationName == 'Unknown') {
+          _getCurrentLocation();
+        }
+      },
+      child: Container(
+        width: 160.w,
+        padding:
+            EdgeInsets.only(left: 14.w, top: 17.h, bottom: 11.h, right: 20.w),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.r),
+          color: AppColors.cFFF4E9,
+        ),
+        child: Row(
+          children: [
+            SvgPicture.asset(Assets.icons.locationOrangeLawbug),
+            UIHelper.horizontalSpace(7.w),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    'Location',
-                    style: TextFontStyle.headline20c212B36stylepoppinsW500
-                        .copyWith(
-                      fontSize: 12.sp,
-                      color: AppColors.c454F5B,
-                      height: 1.5.h,
-                    ),
+                  Row(
+                    children: [
+                      Text(
+                        'Location',
+                        style: TextFontStyle.headline20c212B36stylepoppinsW500
+                            .copyWith(
+                          fontSize: 12.sp,
+                          color: AppColors.c454F5B,
+                          height: 1.5.h,
+                        ),
+                      ),
+                      UIHelper.horizontalSpace(6.w),
+                      SvgPicture.asset(Assets.icons.activeIcon),
+                    ],
                   ),
-                  UIHelper.horizontalSpace(6.w),
-                  SvgPicture.asset(Assets.icons.activeIcon),
+                  UIHelper.verticalSpace(2.h),
+                  Text(
+                    _locationName,
+                    style: TextFontStyle.headline32c212B36stylepoppinsW700.copyWith(
+                      fontSize: 10.sp, // Reduced font size to handle long error messages
+                      fontWeight: FontWeight.w600,
+                      height: 1.2.h,
+                      color: AppColors.c212B36,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                 ],
               ),
-              UIHelper.verticalSpace(2.h),
-              Text(
-                _locationName,
-                style: TextFontStyle.headline32c212B36stylepoppinsW700.copyWith(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w600,
-                  height: 1.55.h,
-                  color: AppColors.c212B36,
-                ),
-                maxLines: 3,
-              ),
-            ],
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
