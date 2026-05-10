@@ -108,44 +108,32 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 ),
                 UIHelper.verticalSpace(5.h),
                 UIHelper.verticalSpace(5.h),
-                if (kIsWeb) ...[
-                  customeButton(
-                    name: "DEBUG: Grant Web Access",
-                    color: Colors.green,
-                    context: context,
-                    onCallBack: () async {
-                      await appData.write(kKeyIsSubscribed, true);
-                      Get.offAll(() => const Loading());
-                      ToastUtil.showLongToast("Web Access Granted for Testing");
-                    },
-                  ),
-                  UIHelper.verticalSpace(10.h),
-                ],
                 UIHelper.customDivider(color: AppColors.cDFE3E8),
                 UIHelper.verticalSpace(5.h),
                 Consumer<PurchaseProvider>(builder: (context, p, _) {
-                  if (p.packages.isEmpty) {
-                    if (kIsWeb) {
-                      return Padding(
-                        padding: EdgeInsets.symmetric(vertical: 40.h),
-                        child: Column(
-                          children: [
-                            const Icon(Icons.shopping_bag_outlined, size: 64, color: Colors.grey),
-                            UIHelper.verticalSpace(16.h),
-                            Text(
-                              "Subscription Plans (Mobile Only)",
-                              style: TextFontStyle.headline20c212B36stylepoppinsW500.copyWith(fontSize: 16.sp),
-                            ),
-                            UIHelper.verticalSpace(8.h),
-                            Text(
-                              "Use the 'Grant Web Access' button above to test PWA features.",
-                              textAlign: TextAlign.center,
-                              style: TextFontStyle.headline16c919EABstylepoppinsW400.copyWith(fontSize: 13.sp),
-                            ),
-                          ],
-                        ),
-                      );
-                    }
+                  List<dynamic> displayPackages = p.packages;
+                  bool isMock = false;
+
+                  if (displayPackages.isEmpty && kIsWeb) {
+                    isMock = true;
+                    // Create mock objects that mimic the structure expected by the UI
+                    displayPackages = [
+                      {
+                        "title": "Monthly Plan",
+                        "price": "\$12.99",
+                        "description": "Full access to all features billed monthly.",
+                        "type": "monthly"
+                      },
+                      {
+                        "title": "Annual Plan",
+                        "price": "\$99.99",
+                        "description": "Full access to all features billed annually.",
+                        "type": "annual"
+                      }
+                    ];
+                  }
+
+                  if (displayPackages.isEmpty) {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 40.h),
                       child: Column(
@@ -165,8 +153,18 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       ),
                     );
                   }
-                  log("Monthly Plan:-${p.packages.first.storeProduct.title}\n");
-                  log("Yearly Plan:-${p.packages.last.storeProduct.title}\n");
+
+                  final monthlyPkg = isMock ? displayPackages[0] : displayPackages.first;
+                  final yearlyPkg = isMock ? displayPackages[1] : displayPackages.last;
+
+                  String getMonthlyTitle() => isMock ? monthlyPkg['title'] : monthlyPkg.storeProduct.title;
+                  String getMonthlyPrice() => isMock ? monthlyPkg['price'] : monthlyPkg.storeProduct.priceString;
+                  String getMonthlyDesc() => isMock ? monthlyPkg['description'] : monthlyPkg.storeProduct.description;
+
+                  String getYearlyTitle() => isMock ? yearlyPkg['title'] : yearlyPkg.storeProduct.title;
+                  String getYearlyPrice() => isMock ? yearlyPkg['price'] : yearlyPkg.storeProduct.priceString;
+                  String getYearlyDesc() => isMock ? yearlyPkg['description'] : yearlyPkg.storeProduct.description;
+
                   return Column(
                     children: [
                       // * ################################################################
@@ -217,7 +215,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                               ),
                                               UIHelper.horizontalSpace(2.w),
                                               Text(
-                                                'Monthly ${p.packages.first.storeProduct.priceString}/per month',
+                                                'Monthly ${getMonthlyPrice()}/per month',
                                                 style: TextFontStyle
                                                     .headline14c22BB33stylepoppinsW700
                                                     .copyWith(
@@ -241,8 +239,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  "${p.packages.first.storeProduct.title}\n"
-                                                  "${p.packages.first.storeProduct.priceString}/per month",
+                                                  "${getMonthlyTitle()}\n"
+                                                  "${getMonthlyPrice()}/per month",
                                                   style: TextFontStyle
                                                       .headline16c212B36stylepoppinsW600
                                                       .copyWith(
@@ -255,7 +253,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                           UIHelper.verticalSpace(23.h),
                                           PlansCondition(
                                             text:
-                                                'Monthly Plans/${p.packages.first.storeProduct.priceString}/per month',
+                                                'Monthly Plans/${getMonthlyPrice()}/per month',
                                           ),
                                           UIHelper.verticalSpace(5.h),
                                           Row(
@@ -266,8 +264,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                               UIHelper.horizontalSpace(6.w),
                                               Expanded(
                                                 child: Text(
-                                                  p.packages.first.storeProduct
-                                                      .description,
+                                                  getMonthlyDesc(),
                                                   style: TextFontStyle
                                                       .headline16c212B36stylepoppinsW600
                                                       .copyWith(
@@ -438,7 +435,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                               ),
                                               UIHelper.horizontalSpace(2.w),
                                               Text(
-                                                'Yearly ${p.packages.last.storeProduct.priceString}/per year',
+                                                'Yearly ${getYearlyPrice()}/per year',
                                                 style: TextFontStyle
                                                     .headline14c22BB33stylepoppinsW700
                                                     .copyWith(
@@ -462,8 +459,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  "${p.packages.last.storeProduct.title}\n"
-                                                  "${p.packages.last.storeProduct.priceString}/per year",
+                                                  "${getYearlyTitle()}\n"
+                                                  "${getYearlyPrice()}/per year",
                                                   style: TextFontStyle
                                                       .headline16c212B36stylepoppinsW600
                                                       .copyWith(
@@ -476,7 +473,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                           UIHelper.verticalSpace(23.h),
                                           PlansCondition(
                                             text:
-                                                'Yearly Plans/${p.packages.last.storeProduct.priceString}/per year',
+                                                'Annual Plans/${getYearlyPrice()}/per year',
                                           ),
                                           UIHelper.verticalSpace(5.h),
                                           Row(
@@ -487,8 +484,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                               UIHelper.horizontalSpace(6.w),
                                               Expanded(
                                                 child: Text(
-                                                  p.packages.last.storeProduct
-                                                      .description,
+                                                  getYearlyDesc(),
                                                   style: TextFontStyle
                                                       .headline16c212B36stylepoppinsW600
                                                       .copyWith(
@@ -511,7 +507,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                               ),
                                               UIHelper.horizontalSpace(6.w),
                                               Text(
-                                                'Billed yearly. Cancel anytime.',
+                                                'Billed annually. Cancel anytime',
                                                 style: TextFontStyle
                                                     .headline16c212B36stylepoppinsW600
                                                     .copyWith(
@@ -598,16 +594,6 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                                 'Priority Support – Priority Support',
                                           ),
                                           UIHelper.verticalSpace(16.h),
-                                          // customeButton(
-                                          //   name: 'Select',
-                                          //   onCallBack: () {
-                                          //     setState(() {
-                                          //       selectedSubscription = 0;
-                                          //     });
-                                          //   },
-                                          //   context: context,
-                                          // ),
-                                          // UIHelper.verticalSpace(16.h)
                                         ],
                                       ),
                                     )
@@ -625,6 +611,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
 
                 // * Previous code for Purchase Button and Terms/Privacy/Restore
                 Consumer<PurchaseProvider>(builder: (context, p, _) {
+                  List<dynamic> displayPackages = p.packages;
                   return Column(
                     children: [
                       AuthCustomeButton(
@@ -633,27 +620,28 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                             : (purchaseProvider.isTrialAvailable
                                 ? 'Start 14 Day\'s Trial'.tr
                                 : 'Purchase Now'.tr),
-                        isLoading: isLoading, // 👈 নতুন প্যারামিটার
+                        isLoading: isLoading, 
                         onCallBack: () async {
                           setState(() => isLoading = true);
 
-                          bool success = false;
-                          if (selectedSubscription == 1) {
-                            success =
-                                await p.purchaseSubscription(type: "monthly");
+                          if (kIsWeb && p.packages.isEmpty) {
+                            // MOCK PURCHASE FOR WEB
+                            await appData.write(kKeyIsSubscribed, true);
+                            Get.offAll(() => const Loading());
+                            ToastUtil.showLongToast("Purchase Successful (Web Test Mode)");
                           } else {
-                            success =
-                                await p.purchaseSubscription(type: "yearly");
+                            bool success = false;
+                            if (selectedSubscription == 1) {
+                              success = await p.purchaseSubscription(type: "monthly");
+                            } else {
+                              success = await p.purchaseSubscription(type: "yearly");
+                            }
+                            if (success) {
+                               Get.offAll(() => const Loading());
+                            }
                           }
 
                           setState(() => isLoading = false);
-
-                          if (success) {
-                            Get.offAll(() => const Loading());
-                            ToastUtil.showLongToast(
-                              'Subscription successful! You now have access to all premium features',
-                            );
-                          }
                         },
                         height: 60.h,
                         minWidth: double.infinity,
