@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/foundation.dart'; // Added for kIsWeb
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:lawbug829/helpers/platform_helper.dart';
 
@@ -12,6 +13,11 @@ final class PurchaseHelper {
 
   /// Initialize RevenueCat with optional app user ID
   static Future<void> init({required String? id}) async {
+    if (kIsWeb) {
+      log("Skipping PurchaseHelper.init on Web");
+      return;
+    }
+
     if (isConfigured) {
       log("✅ Purchases already configured. Skipping re-init.");
       return;
@@ -20,7 +26,7 @@ final class PurchaseHelper {
     try {
       await Purchases.setLogLevel(LogLevel.debug);
 
-      final config = PurchasesConfiguration(_apiKey)..appUserID = id;
+      final dynamic config = PurchasesConfiguration(_apiKey)..appUserID = id;
       await Purchases.configure(config);
 
       isConfigured = true;
@@ -34,6 +40,7 @@ final class PurchaseHelper {
 
   /// Log in user to RevenueCat manually if needed
   static Future<void> logIn(String userId) async {
+    if (kIsWeb) return;
     try {
       await Purchases.logIn(userId);
       log("🔐 RevenueCat login success for $userId");
@@ -45,6 +52,7 @@ final class PurchaseHelper {
 
   /// Log out user
   static Future<void> logOut(id) async {
+    if (kIsWeb) return;
     try {
       await Purchases.logOut();
       log("🚪 RevenueCat logout successful.");
@@ -56,6 +64,7 @@ final class PurchaseHelper {
 
   /// Check if user has active subscription
   static Future<bool> hasActiveSubscription() async {
+    if (kIsWeb) return false;
     try {
       final customerInfo = await Purchases.getCustomerInfo();
       final isActive = customerInfo.entitlements.active.isNotEmpty;
