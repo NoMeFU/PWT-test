@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:lawbug829/helpers/geocoding_helper.dart';
 import 'package:intl/intl.dart';
 import 'package:lawbug829/assets_healper/app_lottie.dart';
 import 'package:lawbug829/constants/text_font_style.dart';
@@ -49,8 +49,8 @@ class _DailyUpdateContentState extends State<DailyUpdateContent> {
     }
 
     try {
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(latitude, longitude);
+      List<dynamic> placemarks =
+          await GeocodingHelper.placemarkFromCoordinates(latitude, longitude);
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
         final address =

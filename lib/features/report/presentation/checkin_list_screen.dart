@@ -17,7 +17,7 @@ import 'package:lawbug829/helpers/toast.dart';
 import 'package:lawbug829/helpers/ui_helpers.dart';
 import 'package:lawbug829/networks/api_acess.dart';
 import 'package:intl/intl.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:lawbug829/helpers/geocoding_helper.dart';
 import 'package:lottie/lottie.dart';
 
 class CheckInListScreen extends StatefulWidget {
@@ -178,7 +178,7 @@ class _WorkingReportCardState extends State<WorkingReportCard> {
     if (Lat == null || Long == null) return;
 
     try {
-      List<Placemark> placemarks = await placemarkFromCoordinates(Lat, Long);
+      List<dynamic> placemarks = await GeocodingHelper.placemarkFromCoordinates(Lat, Long);
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
         setState(() {

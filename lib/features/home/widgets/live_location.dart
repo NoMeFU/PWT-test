@@ -113,7 +113,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:lawbug829/helpers/geocoding_helper.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:lawbug829/constants/text_font_style.dart';
 import 'package:lawbug829/gen/assets.gen.dart';
@@ -246,7 +246,7 @@ class _LiveLocationState extends State<LiveLocation> {
         });
         return;
       }
-      List<Placemark> placemarks = await placemarkFromCoordinates(
+      List<dynamic> placemarks = await GeocodingHelper.placemarkFromCoordinates(
         _latitude!,
         _longitude!,
       );

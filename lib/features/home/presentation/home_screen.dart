@@ -6,7 +6,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:lawbug829/helpers/geocoding_helper.dart';
 import 'package:intl/intl.dart';
 import 'package:lawbug829/assets_healper/app_image.dart';
 import 'package:lawbug829/assets_healper/app_lottie.dart';
@@ -98,8 +98,8 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
       
-      List<Placemark> placemarks =
-          await placemarkFromCoordinates(latitude, longitude);
+      List<dynamic> placemarks =
+          await GeocodingHelper.placemarkFromCoordinates(latitude, longitude);
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
         final address =
