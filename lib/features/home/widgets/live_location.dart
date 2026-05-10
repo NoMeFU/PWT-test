@@ -252,7 +252,7 @@ class _LiveLocationState extends State<LiveLocation> {
       );
 
       if (placemarks.isNotEmpty) {
-        Placemark place = placemarks.first;
+        final place = placemarks.first;
         setState(() {
           _locationName = place.locality ?? 'Unknown';
         });

@@ -49,7 +49,7 @@ class StoreProduct {
   final String description = 'Mock Description';
   final String title = 'Mock Title';
   final double price = 0.0;
-  final String priceString = '$0.00';
+  final String priceString = '\$0.00';
   final dynamic introductoryPrice = null;
 }
 

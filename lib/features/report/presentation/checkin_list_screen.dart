@@ -180,7 +180,7 @@ class _WorkingReportCardState extends State<WorkingReportCard> {
     try {
       List<dynamic> placemarks = await GeocodingHelper.placemarkFromCoordinates(Lat, Long);
       if (placemarks.isNotEmpty) {
-        Placemark place = placemarks.first;
+        final place = placemarks.first;
         setState(() {
           location = [
             place.street,
