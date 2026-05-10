@@ -450,6 +450,7 @@ Future<bool> isAndroid13OrHigher() async {
 }
 
 Future<void> requestScheduleExactAlarmPermission() async {
+  if (kIsWeb) return;
   await Permission.scheduleExactAlarm.request();
 }
 

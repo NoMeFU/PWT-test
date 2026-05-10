@@ -4,7 +4,7 @@
 class Purchases {
   static Future<void> setLogLevel(dynamic level) async {}
   static Future<void> configure(PurchasesConfiguration configuration) async {}
-  static Future<dynamic> logIn(String userId) async { return null; }
+  static Future<LogInResult> logIn(String userId) async { return LogInResult(); }
   static Future<void> logOut() async {}
   static Future<CustomerInfo> getCustomerInfo() async { return CustomerInfo(); }
   static Future<Offerings> getOfferings() async { return Offerings(); }
@@ -39,12 +39,28 @@ class EntitlementInfo {
 }
 
 class Offerings {
-  final Map<String, dynamic>? all = {};
-  final dynamic current = null;
+  final Map<String, Offering> all = {};
+  final Offering? current = null;
+}
+
+class Offering {
+  final List<Package> availablePackages = [];
+  final Package? monthly = null;
+  final Package? annual = null;
+  final Package? lifetime = null;
 }
 
 class Package {
-  final packageType = PackageType.unknown;
+  final String packageType = PackageType.unknown;
+  final StoreProduct storeProduct = StoreProduct();
+}
+
+class StoreProduct {
+  final dynamic introductoryPrice = null;
+  final String priceString = "";
+  final String title = "";
+  final String description = "";
+  final double price = 0.0;
 }
 
 class PackageType {
@@ -60,4 +76,7 @@ class PackageType {
 }
 
 class PurchasesErrorCode {}
-class LogInResult {}
+class LogInResult {
+  final CustomerInfo customerInfo = CustomerInfo();
+}
+
