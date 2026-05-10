@@ -231,7 +231,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:lawbug829/helpers/geocoding_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:lawbug829/common_widget/custom_button.dart';
 import 'package:lawbug829/constants/text_font_style.dart';
@@ -273,7 +273,7 @@ class _CurrentLocationScreenState extends State<CurrentLocationScreen> {
          throw Exception("Web platform: skipping local geocoding");
       }
       // 🔹 Try local geocoding first (much faster)
-      List<Placemark> placemarks = await placemarkFromCoordinates(lat, lng);
+      List<dynamic> placemarks = await GeocodingHelper.placemarkFromCoordinates(lat, lng);
 
       if (placemarks.isNotEmpty) {
         final p = placemarks.first;
