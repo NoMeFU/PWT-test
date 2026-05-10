@@ -16,7 +16,7 @@ import 'package:lawbug829/common_widget/custom_app_bar.dart';
 import 'package:lawbug829/constants/text_font_style.dart';
 import 'package:lawbug829/features/subscription/presentation/widgets/plan_offer.dart';
 import 'package:lawbug829/features/subscription/presentation/widgets/plans_condition.dart';
-import 'package:lawbug829/features/subscription/subcription_service/subscriotion_provider.dart';
+import 'package:lawbug829/features/subscription/subcription_service/subscription_provider.dart';
 import 'package:lawbug829/gen/assets.gen.dart';
 import 'package:lawbug829/gen/colors.gen.dart';
 import 'package:lawbug829/helpers/navigation_service.dart';
@@ -114,20 +114,26 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   List<dynamic> pkgs = p.packages;
                   bool isMock = false;
 
-                  if (pkgs.isEmpty && kIsWeb) {
-                    isMock = true;
-                    pkgs = [
-                      {
-                        "title": "Monthly Plan",
-                        "price": "\$12.99",
-                        "description": "Full access to all features billed monthly.",
-                      },
-                      {
-                        "title": "Annual Plan",
-                        "price": "\$99.99",
-                        "description": "Full access to all features billed annually.",
-                      }
-                    ];
+                  if (kIsWeb) {
+                    log('============================= PWA detected, checking packages');
+                    if (pkgs.isEmpty) {
+                      log('============================= Packages empty on web, using mock plans');
+                      isMock = true;
+                      pkgs = [
+                        {
+                          "title": "Monthly Plan",
+                          "price": "\$12.99",
+                          "description": "Full access to all features billed monthly.",
+                        },
+                        {
+                          "title": "Annual Plan",
+                          "price": "\$99.99",
+                          "description": "Full access to all features billed annually.",
+                        }
+                      ];
+                    } else {
+                       log('============================= Packages found on web: ${pkgs.length}');
+                    }
                   }
 
                   if (pkgs.isEmpty) {

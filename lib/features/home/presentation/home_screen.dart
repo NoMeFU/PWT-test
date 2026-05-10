@@ -1,5 +1,6 @@
 // ignore_for_file: dead_code, unused_element, override_on_non_overriding_member, avoid_print, use_build_context_synchronously, unnecessary_brace_in_string_interps
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';

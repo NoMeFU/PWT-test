@@ -280,3 +280,46 @@ class CustomTextFormFieldMax extends StatelessWidget {
     );
   }
 }
+
+class CustomTabWidget extends StatelessWidget {
+  final String label;
+  final bool isSelected;
+  final VoidCallback onTap;
+  final double horizontalPadding;
+
+  const CustomTabWidget({
+    super.key,
+    required this.label,
+    required this.isSelected,
+    required this.onTap,
+    this.horizontalPadding = 0,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: horizontalPadding + 16.w,
+          vertical: 10.h,
+        ),
+        decoration: BoxDecoration(
+          color: isSelected ? AppColors.cFF8E21 : AppColors.cFFFFFF,
+          borderRadius: BorderRadius.circular(24.r),
+          border: Border.all(
+            color: isSelected ? AppColors.cFF8E21 : AppColors.cEBEBEB,
+          ),
+        ),
+        child: Text(
+          label,
+          style: TextStyle(
+            color: isSelected ? AppColors.cFFFFFF : AppColors.c919EAB,
+            fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+            fontSize: 14.sp,
+          ),
+        ),
+      ),
+    );
+  }
+}

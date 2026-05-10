@@ -39,7 +39,7 @@ class _NavigationScreenState extends State<BottomNavBar> {
   @override
   void initState() {
     super.initState();
-    getSubscriptionCheckRXObj.getSubscriptionRX;
+    getSubscriptionCheckRXObj.getSubscriptionRX();
   }
 
   final List<Widget> _screens = [
@@ -332,16 +332,13 @@ class _NavigationScreenState extends State<BottomNavBar> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {
-      getSubscriptionCheckRXObj.getSubscriptionRX();
-    });
     return Scaffold(
       body: _screens[_currentIndex],
       floatingActionButton: MediaQuery.of(context).viewInsets.bottom == 0
           ? StreamBuilder<CheckSubscription>(
               stream: getSubscriptionCheckRXObj.dataFetcher,
               builder: (context, snapshot) {
-                bool isSubscribed = snapshot.data?.data?.isSubscribed ?? false;
+                bool isSubscribed = snapshot.data?.data?.isSubscribed ?? (snapshot.hasData ? false : true);
 
                 return FloatingActionButton(
                   backgroundColor: AppColors.cFFFFFF,

@@ -64,24 +64,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     return ClipRRect(
                       borderRadius: BorderRadius.circular(40),
                       child: (profileImage != null && profileImage.isNotEmpty)
-                          ? CachedNetworkImage(
-                              imageUrl: profileImage,
-                              height: 80,
-                              width: 80,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => Image.asset(
-                                Appimages.profileImage,
-                                height: 80,
-                                width: 80,
-                                fit: BoxFit.cover,
-                              ),
-                              errorWidget: (context, url, error) => Image.asset(
-                                Appimages.profileImage,
-                                height: 80,
-                                width: 80,
-                                fit: BoxFit.cover,
-                              ),
-                            )
+                          ? (kIsWeb
+                              ? Image.network(
+                                  profileImage,
+                                  height: 80,
+                                  width: 80,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) => Image.asset(
+                                    Appimages.profileImage,
+                                    height: 80,
+                                    width: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : CachedNetworkImage(
+                                  imageUrl: profileImage,
+                                  height: 80,
+                                  width: 80,
+                                  fit: BoxFit.cover,
+                                  placeholder: (context, url) => Image.asset(
+                                    Appimages.profileImage,
+                                    height: 80,
+                                    width: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  errorWidget: (context, url, error) => Image.asset(
+                                    Appimages.profileImage,
+                                    height: 80,
+                                    width: 80,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ))
                           : Image.asset(
                               Appimages.profileImage,
                               height: 80,

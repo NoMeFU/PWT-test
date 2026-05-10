@@ -1,4 +1,4 @@
-import 'package:lawbug829/features/subscription/subcription_service/subscriotion_provider.dart';
+import 'package:lawbug829/features/subscription/subcription_service/subscription_provider.dart';
 import 'package:provider/provider.dart';
 import '../provider/auth_provider.dart';
 
