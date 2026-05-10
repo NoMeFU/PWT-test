@@ -111,29 +111,26 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                 UIHelper.customDivider(color: AppColors.cDFE3E8),
                 UIHelper.verticalSpace(5.h),
                 Consumer<PurchaseProvider>(builder: (context, p, _) {
-                  List<dynamic> displayPackages = p.packages;
+                  List<dynamic> pkgs = p.packages;
                   bool isMock = false;
 
-                  if (displayPackages.isEmpty && kIsWeb) {
+                  if (pkgs.isEmpty && kIsWeb) {
                     isMock = true;
-                    // Create mock objects that mimic the structure expected by the UI
-                    displayPackages = [
+                    pkgs = [
                       {
                         "title": "Monthly Plan",
                         "price": "\$12.99",
                         "description": "Full access to all features billed monthly.",
-                        "type": "monthly"
                       },
                       {
                         "title": "Annual Plan",
                         "price": "\$99.99",
                         "description": "Full access to all features billed annually.",
-                        "type": "annual"
                       }
                     ];
                   }
 
-                  if (displayPackages.isEmpty) {
+                  if (pkgs.isEmpty) {
                     return Padding(
                       padding: EdgeInsets.symmetric(vertical: 40.h),
                       child: Column(
@@ -154,16 +151,16 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                     );
                   }
 
-                  final monthlyPkg = isMock ? displayPackages[0] : displayPackages.first;
-                  final yearlyPkg = isMock ? displayPackages[1] : displayPackages.last;
+                  final monthlyPkg = pkgs.first;
+                  final yearlyPkg = pkgs.last;
 
-                  String getMonthlyTitle() => isMock ? monthlyPkg['title'] : monthlyPkg.storeProduct.title;
-                  String getMonthlyPrice() => isMock ? monthlyPkg['price'] : monthlyPkg.storeProduct.priceString;
-                  String getMonthlyDesc() => isMock ? monthlyPkg['description'] : monthlyPkg.storeProduct.description;
+                  final String mTitle = isMock ? monthlyPkg['title'] : (monthlyPkg as Package).storeProduct.title;
+                  final String mPrice = isMock ? monthlyPkg['price'] : (monthlyPkg as Package).storeProduct.priceString;
+                  final String mDesc = isMock ? monthlyPkg['description'] : (monthlyPkg as Package).storeProduct.description;
 
-                  String getYearlyTitle() => isMock ? yearlyPkg['title'] : yearlyPkg.storeProduct.title;
-                  String getYearlyPrice() => isMock ? yearlyPkg['price'] : yearlyPkg.storeProduct.priceString;
-                  String getYearlyDesc() => isMock ? yearlyPkg['description'] : yearlyPkg.storeProduct.description;
+                  final String yTitle = isMock ? yearlyPkg['title'] : (yearlyPkg as Package).storeProduct.title;
+                  final String yPrice = isMock ? yearlyPkg['price'] : (yearlyPkg as Package).storeProduct.priceString;
+                  final String yDesc = isMock ? yearlyPkg['description'] : (yearlyPkg as Package).storeProduct.description;
 
                   return Column(
                     children: [
@@ -215,7 +212,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                               ),
                                               UIHelper.horizontalSpace(2.w),
                                               Text(
-                                                'Monthly ${getMonthlyPrice()}/per month',
+                                                'Monthly $mPrice/per month',
                                                 style: TextFontStyle
                                                     .headline14c22BB33stylepoppinsW700
                                                     .copyWith(
@@ -239,8 +236,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  "${getMonthlyTitle()}\n"
-                                                  "${getMonthlyPrice()}/per month",
+                                                  "$mTitle\n"
+                                                  "$mPrice/per month",
                                                   style: TextFontStyle
                                                       .headline16c212B36stylepoppinsW600
                                                       .copyWith(
@@ -253,7 +250,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                           UIHelper.verticalSpace(23.h),
                                           PlansCondition(
                                             text:
-                                                'Monthly Plans/${getMonthlyPrice()}/per month',
+                                                'Monthly Plans/$mPrice/per month',
                                           ),
                                           UIHelper.verticalSpace(5.h),
                                           Row(
@@ -264,7 +261,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                               UIHelper.horizontalSpace(6.w),
                                               Expanded(
                                                 child: Text(
-                                                  getMonthlyDesc(),
+                                                  mDesc,
                                                   style: TextFontStyle
                                                       .headline16c212B36stylepoppinsW600
                                                       .copyWith(
@@ -435,7 +432,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                               ),
                                               UIHelper.horizontalSpace(2.w),
                                               Text(
-                                                'Yearly ${getYearlyPrice()}/per year',
+                                                'Yearly $yPrice/per year',
                                                 style: TextFontStyle
                                                     .headline14c22BB33stylepoppinsW700
                                                     .copyWith(
@@ -459,8 +456,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                             children: [
                                               Expanded(
                                                 child: Text(
-                                                  "${getYearlyTitle()}\n"
-                                                  "${getYearlyPrice()}/per year",
+                                                  "$yTitle\n"
+                                                  "$yPrice/per year",
                                                   style: TextFontStyle
                                                       .headline16c212B36stylepoppinsW600
                                                       .copyWith(
@@ -473,7 +470,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                           UIHelper.verticalSpace(23.h),
                                           PlansCondition(
                                             text:
-                                                'Annual Plans/${getYearlyPrice()}/per year',
+                                                'Annual Plans/$yPrice/per year',
                                           ),
                                           UIHelper.verticalSpace(5.h),
                                           Row(
@@ -484,7 +481,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                                               UIHelper.horizontalSpace(6.w),
                                               Expanded(
                                                 child: Text(
-                                                  getYearlyDesc(),
+                                                  yDesc,
                                                   style: TextFontStyle
                                                       .headline16c212B36stylepoppinsW600
                                                       .copyWith(
