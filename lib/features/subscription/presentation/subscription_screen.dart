@@ -146,7 +146,24 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                         ),
                       );
                     }
-                    return const Center(child: CircularProgressIndicator());
+                    return Padding(
+                      padding: EdgeInsets.symmetric(vertical: 40.h),
+                      child: Column(
+                        children: [
+                          const CircularProgressIndicator(),
+                          UIHelper.verticalSpace(20.h),
+                          Text(
+                            "Loading Plans...",
+                            style: TextFontStyle.headline16c919EABstylepoppinsW400,
+                          ),
+                          UIHelper.verticalSpace(10.h),
+                          TextButton(
+                            onPressed: () => p.fetchSubscriptions(),
+                            child: const Text("Retry Fetching"),
+                          ),
+                        ],
+                      ),
+                    );
                   }
                   log("Monthly Plan:-${p.packages.first.storeProduct.title}\n");
                   log("Yearly Plan:-${p.packages.last.storeProduct.title}\n");
