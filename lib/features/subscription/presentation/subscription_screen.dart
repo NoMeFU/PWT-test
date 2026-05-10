@@ -24,6 +24,7 @@ import 'package:lawbug829/helpers/toast.dart';
 import 'package:lawbug829/helpers/ui_helpers.dart';
 import 'package:lawbug829/loading_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SubscriptionScreen extends StatefulWidget {
