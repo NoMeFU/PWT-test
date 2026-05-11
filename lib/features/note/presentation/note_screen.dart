@@ -2,15 +2,18 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:lawbug829/features/note/presentation/widgets/nested_tabbar_functionality.dart';
 import 'package:lawbug829/helpers/all_routes.dart';
 import 'package:lawbug829/helpers/navigation_service.dart';
+import 'package:lawbug829/helpers/toast.dart';
 import 'package:lawbug829/helpers/ui_helpers.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lawbug829/common_widget/custom_button.dart';
 import 'package:lawbug829/constants/text_font_style.dart';
 import 'package:lawbug829/gen/assets.gen.dart';
 import 'package:lawbug829/gen/colors.gen.dart';
+import 'package:lawbug829/networks/api_acess.dart';
 
 class NoteScreen extends StatefulWidget {
   const NoteScreen({super.key});
@@ -65,7 +68,6 @@ class _NoteScreenState extends State<NoteScreen>
                     label: 'Facing Problem',
                     isSelected: _currentIndex == 1,
                     onTap: () {
-                      //_tabController.animateTo(1);
                       NavigationService.navigateTo(
                         Routes.addFacingProblemScreen,
                       );
@@ -96,7 +98,7 @@ Future<dynamic> _buildShowDialog(BuildContext context) {
         ),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            maxHeight: 0.85.sh, // স্ক্রিনের 85% এর বেশি না
+            maxHeight: 0.85.sh,
           ),
           child: const SingleChildScrollView(
             child: DailyWorkUpdateWidget(),
@@ -116,6 +118,7 @@ class DailyWorkUpdateWidget extends StatefulWidget {
 
 class _DailyWorkUpdateWidgetState extends State<DailyWorkUpdateWidget> {
   final List<TextEditingController> _controllers = [];
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -133,7 +136,7 @@ class _DailyWorkUpdateWidgetState extends State<DailyWorkUpdateWidget> {
   List<Map<String, String>> _getTaskTexts() {
     return List.generate(_controllers.length, (index) {
       return {
-        'task': 'Task ${index + 1}',
+        'task_name': 'Task ${index + 1}',
         'description': _controllers[index].text,
       };
     });
@@ -160,7 +163,7 @@ class _DailyWorkUpdateWidgetState extends State<DailyWorkUpdateWidget> {
         children: [
           Center(
             child: Text(
-              'Daily Work’s Update',
+              'Daily Work\u2019s Update',
               style: TextFontStyle.headline20c212B36stylepoppinsW500.copyWith(
                 height: 1.5.h,
               ),
@@ -218,15 +221,88 @@ class _DailyWorkUpdateWidgetState extends State<DailyWorkUpdateWidget> {
 
           UIHelper.verticalSpace(20.h),
 
-          customeButton(
-            name: 'Submit',
-            onCallBack: () {
-              final List<Map<String, String>> tasks = _getTaskTexts();
-              debugPrint('Tasks List: $tasks');
-              NavigationService.navigateTo(Routes.updateDetailsScreen);
-            },
-            context: context,
-          ),
+          isLoading
+              ? Container(
+                  height: 56,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.cFFFFFF,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
+                      color: AppColors.cFF8E21,
+                      width: 2,
+                    ),
+                  ),
+                  child: const Center(
+                    child: CircularProgressIndicator(color: AppColors.cFF8E21),
+                  ),
+                )
+              : customeButton(
+                  name: 'Submit',
+                  onCallBack: () async {
+                    // Validate that at least one task has content
+                    final hasContent = _controllers.any(
+                      (c) => c.text.trim().isNotEmpty,
+                    );
+                    if (!hasContent) {
+                      ToastUtil.showShortToast(
+                          'Please enter at least one task description');
+                      return;
+                    }
+
+                    setState(() {
+                      isLoading = true;
+                    });
+
+                    final List<Map<String, String>> tasks = _getTaskTexts();
+                    debugPrint('Tasks sent to API: $tasks');
+
+                    String formattedDate =
+                        DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+                    // Get the latest employee_checking_id from today's check-in data
+                    dynamic employeeCheckingId;
+                    try {
+                      final checkInData =
+                          checkInCheckOutRx.dataFetcher.valueOrNull;
+                      if (checkInData?.data != null &&
+                          checkInData!.data!.isNotEmpty) {
+                        employeeCheckingId = checkInData.data!.last.id;
+                      }
+                    } catch (e) {
+                      debugPrint('Error getting employee_checking_id: $e');
+                    }
+
+                    if (employeeCheckingId == null) {
+                      setState(() {
+                        isLoading = false;
+                      });
+                      ToastUtil.showShortToast(
+                          'Please check in first before adding a daily update');
+                      return;
+                    }
+
+                    bool isSuccess =
+                        await postCheckoutNoteApiRXObj.postCheckoutNoteRX(
+                      task_date: formattedDate,
+                      tasks: tasks,
+                      employee_checking_id: employeeCheckingId.toString(),
+                    );
+
+                    setState(() {
+                      isLoading = false;
+                    });
+
+                    if (isSuccess) {
+                      // Refresh the daily updates list
+                      getDailyUpdateApiRXObj.getDailyUpdateRx();
+                      Navigator.pop(context);
+                      ToastUtil.showShortToast(
+                          'Daily Update Submitted Successfully');
+                    }
+                  },
+                  context: context,
+                ),
         ],
       ),
     );
