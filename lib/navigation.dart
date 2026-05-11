@@ -243,12 +243,12 @@ class _NavigationScreenState extends State<BottomNavBar> {
                       onCallBack: isLoading
                           ? () {}
                           : () {
-                              // if (isSubscribed == false) {
-                              //   NavigationService.navigateTo(
-                              //     Routes.subscriptionScreen,
-                              //   );
-                              //   return;
-                              // } else {
+                              if (isSubscribed == false) {
+                                NavigationService.navigateTo(
+                                  Routes.subscriptionScreen,
+                                );
+                                return;
+                              } else {
                                 if (roleController.text.trim().isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
@@ -261,7 +261,7 @@ class _NavigationScreenState extends State<BottomNavBar> {
                                   Navigator.of(context).pop();
                                   _lastLocationAndAPICalling();
                                 }
-                              // }
+                              }
                             },
                       context: context,
                     );
@@ -342,15 +342,14 @@ class _NavigationScreenState extends State<BottomNavBar> {
                   backgroundColor: AppColors.cFFFFFF,
                   elevation: 0,
                   onPressed: () {
-                    // TEMPORARY BYPASS
-                    // if (isSubscribed == false) {
-                    //   NavigationService.navigateTo(
-                    //     Routes.subscriptionScreen,
-                    //   );
-                    //   return;
-                    // } else {
+                    if (isSubscribed == false) {
+                      NavigationService.navigateTo(
+                        Routes.subscriptionScreen,
+                      );
+                      return;
+                    } else {
                       _showInputDialog();
-                    // }
+                    }
                   },
                   child: Container(
                     decoration: BoxDecoration(
