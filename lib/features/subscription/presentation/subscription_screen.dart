@@ -141,17 +141,24 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                       padding: EdgeInsets.symmetric(vertical: 40.h),
                       child: Column(
                         children: [
-                          const CircularProgressIndicator(),
-                          UIHelper.verticalSpace(20.h),
-                          Text(
-                            "Loading Plans...",
-                            style: TextFontStyle.headline16c919EABstylepoppinsW400,
-                          ),
-                          UIHelper.verticalSpace(10.h),
-                          TextButton(
-                            onPressed: () => p.fetchSubscriptions(),
-                            child: const Text("Retry Fetching"),
-                          ),
+                          if (p.isLoading) ...[
+                            const CircularProgressIndicator(),
+                            UIHelper.verticalSpace(20.h),
+                            Text(
+                              "Loading Plans...",
+                              style: TextFontStyle.headline16c919EABstylepoppinsW400,
+                            ),
+                          ] else ...[
+                            Text(
+                              "Failed to load subscription plans.",
+                              style: TextFontStyle.headline16c919EABstylepoppinsW400,
+                            ),
+                            UIHelper.verticalSpace(10.h),
+                            TextButton(
+                              onPressed: () => p.fetchSubscriptions(),
+                              child: const Text("Retry Fetching"),
+                            ),
+                          ]
                         ],
                       ),
                     );
