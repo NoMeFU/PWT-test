@@ -208,9 +208,7 @@ class _NavigationScreenState extends State<BottomNavBar> {
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           content: Container(
-            width: 450,
-            height:
-                300, // প্রস্থ বাড়ানোর জন্য width সেট করা হলো (আপনি চাইলে এটি 350 বা অন্য সংখ্যা করতে পারেন)
+            width: 350,
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
