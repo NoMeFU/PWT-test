@@ -566,6 +566,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                                   height: 1.5.h,
                                                 ),
                                               ),
+                                              UIHelper.verticalSpace(8.h),
+                                              Text(
+                                                'Started at: ${attendanceData.first.checkIn != null ? _formatTime(attendanceData.first.checkIn) : "--"}',
+                                                style: TextFontStyle.headline16c919EABstylepoppinsW400.copyWith(
+                                                  color: AppColors.cFFFFFF.withOpacity(0.9),
+                                                  fontSize: 14.sp,
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         )
