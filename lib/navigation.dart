@@ -338,6 +338,12 @@ class _NavigationScreenState extends State<BottomNavBar> {
               builder: (context, snapshot) {
                 bool isSubscribed = snapshot.data?.data?.isSubscribed ?? (snapshot.hasData ? false : true);
 
+                // Bypass for tester account
+                final userEmail = homeUserAndAttendanceRx.dataFetcher.valueOrNull?.data?.user?.email;
+                if (userEmail == 'ztejuvpu@sharklasers.com') {
+                  isSubscribed = true;
+                }
+
                 return FloatingActionButton(
                   backgroundColor: AppColors.cFFFFFF,
                   elevation: 0,
