@@ -484,13 +484,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                                                 .checkoutAttendanceInfo(
                                                           status: 'check_out',
                                                           role: attendanceData
-                                                              .last.role
+                                                              .first.role
                                                               .toString(),
                                                           lat: attendanceData
-                                                              .last.lat
+                                                              .first.lat
                                                               .toString(),
                                                           lang: attendanceData
-                                                              .last.long
+                                                              .first.long
                                                               .toString(),
                                                           time:
                                                               formattedDateTime,
@@ -509,9 +509,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                                               .checkInCheckOutInfo();
                                                           homeUserAndAttendanceRx
                                                               .attendanceAndUserInfo();
-                                                          log('Role: ${attendanceData.last.role}');
-                                                          log('Longitude: ${attendanceData.last.lat}');
-                                                          log('Latitute: ${attendanceData.last.long}');
+                                                          log('Role: ${attendanceData.first.role}');
+                                                          log('Longitude: ${attendanceData.first.lat}');
+                                                          log('Latitute: ${attendanceData.first.long}');
                                                           log('Checkout Time: ${formattedDateTime}');
                                                         } else {
                                                           ToastUtil

@@ -78,7 +78,7 @@ class _DailyUpdateContentState extends State<DailyUpdateContent> {
         } else if (snapshot.hasError) {
           log('StreamBuilder Error: ${snapshot.error}',
               stackTrace: snapshot.stackTrace);
-          return Center(child: Text('Error: ${snapshot.error}'));
+          return Center(child: Text('Failed to load updates. Please try again.'));
         } else if (!snapshot.hasData ||
             snapshot.data?.data == null ||
             snapshot.data!.data!.isEmpty) {
