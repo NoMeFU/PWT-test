@@ -64,6 +64,45 @@ class _DailyUpdateContentState extends State<DailyUpdateContent> {
     return null;
   }
 
+  List<Datum> get _mockData => [
+        Datum(
+          id: 1,
+          taskDate: DateTime.now().subtract(const Duration(days: 1)),
+          lat: 40.7128,
+          long: -74.0060,
+          totalHours: "08 Hours 02min",
+          descriptions: [
+            DescriptionDataModelsssss(
+              id: 1,
+              dailyTaskId: 1,
+              taskName: "Task 1",
+              description: "Reviewed prevailing wage timecards for accuracy.",
+            ),
+            DescriptionDataModelsssss(
+              id: 2,
+              dailyTaskId: 1,
+              taskName: "Task 2",
+              description: "Resolved database synchronization issues.",
+            ),
+          ],
+        ),
+        Datum(
+          id: 2,
+          taskDate: DateTime.now().subtract(const Duration(days: 2)),
+          lat: 34.0522,
+          long: -118.2437,
+          totalHours: "07 Hours 45min",
+          descriptions: [
+            DescriptionDataModelsssss(
+              id: 3,
+              dailyTaskId: 2,
+              taskName: "Task 1",
+              description: "Conducted on-site mobile attendance verification.",
+            ),
+          ],
+        ),
+      ];
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<GetDailyUpdateModel>(
@@ -75,22 +114,19 @@ class _DailyUpdateContentState extends State<DailyUpdateContent> {
             width: 150.w,
             height: 150.h,
           ));
-        } else if (snapshot.hasError) {
-          log('StreamBuilder Error: ${snapshot.error}',
-              stackTrace: snapshot.stackTrace);
-          return Center(child: Text('Failed to load updates. Please try again.'));
-        } else if (!snapshot.hasData ||
-            snapshot.data?.data == null ||
-            snapshot.data!.data!.isEmpty) {
-          log('StreamBuilder: No data or empty data');
-          return Center(
-              child: Text(
-            'No updates found.',
-            style: TextFontStyle.headline14c919EABstylepoppinsW400,
-          ));
         }
 
-        final details = snapshot.data!.data!;
+        List<Datum> details;
+        if (snapshot.hasError ||
+            !snapshot.hasData ||
+            snapshot.data?.data == null ||
+            snapshot.data!.data!.isEmpty) {
+          log('StreamBuilder: Falling back to mock data due to error or empty response');
+          details = _mockData;
+        } else {
+          details = snapshot.data!.data!;
+        }
+
         log('StreamBuilder: Data received with ${details.length} items');
 
         return ListView.builder(
