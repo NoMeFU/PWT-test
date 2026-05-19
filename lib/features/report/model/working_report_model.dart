@@ -281,7 +281,11 @@ class ExpenseHistory {
 DateTime? _parseDate(String? input) {
   if (input == null) return null;
   try {
-    return DateTime.parse(input);
+    if (!input.contains('Z') && !input.contains('+') && !input.contains('-') && input.length >= 19) {
+      String formattedStr = input.replaceAll(' ', 'T');
+      return DateTime.parse('${formattedStr}Z').toLocal();
+    }
+    return DateTime.parse(input).toLocal();
   } catch (e) {
     debugPrint('Date parse error: $input');
     return null;
@@ -291,7 +295,11 @@ DateTime? _parseDate(String? input) {
 DateTime? _parseDateOrTime(String? input) {
   if (input == null) return null;
   try {
-    return DateTime.parse(input);
+    if (!input.contains('Z') && !input.contains('+') && !input.contains('-') && input.length >= 19) {
+      String formattedStr = input.replaceAll(' ', 'T');
+      return DateTime.parse('${formattedStr}Z').toLocal();
+    }
+    return DateTime.parse(input).toLocal();
   } catch (e) {
     try {
       final parts = input.split(":");
@@ -300,7 +308,7 @@ DateTime? _parseDateOrTime(String? input) {
         final hour = int.parse(parts[0]);
         final minute = int.parse(parts[1]);
         final second = parts.length > 2 ? int.parse(parts[2]) : 0;
-        return DateTime(now.year, now.month, now.day, hour, minute, second);
+        return DateTime(now.year, now.month, now.day, hour, minute, second).toLocal();
       }
     } catch (_) {}
     debugPrint('Time-only parse error: $input');

@@ -54,12 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
   // * Start the timer to calculate elapsed time
   void startTimer() {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      final elapsed = DateTime.now().difference(startTime);
-      setState(() {
-        elapsedTime = '${elapsed.inHours.toString().padLeft(2, '0')}:'
-            '${(elapsed.inMinutes % 60).toString().padLeft(2, '0')}:'
-            '${(elapsed.inSeconds % 60).toString().padLeft(2, '0')}';
-      });
+      if (mounted) {
+        setState(() {});
+      }
     });
   }
 
@@ -144,12 +141,28 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  DateTime? _parseDateTime(String? datetime) {
+    if (datetime == null || datetime.isEmpty) return null;
+    try {
+      DateTime date;
+      if (!datetime.contains('Z') && !datetime.contains('+') && !datetime.contains('-') && datetime.length >= 19) {
+        String formattedStr = datetime.replaceAll(' ', 'T');
+        date = DateTime.parse('${formattedStr}Z').toLocal();
+      } else {
+        date = DateTime.parse(datetime).toLocal();
+      }
+      return date;
+    } catch (e) {
+      return null;
+    }
+  }
+
   // * Place this method inside your _HomeScreenState class
   String _formatTime(String? datetime) {
-    if (datetime == null || datetime.isEmpty) return "--";
+    final parsed = _parseDateTime(datetime);
+    if (parsed == null) return "--";
     try {
-      final date = DateTime.parse(datetime);
-      return DateFormat('hh:mm a').format(date); // Converts to 09:45 AM
+      return DateFormat('hh:mm a').format(parsed); // Converts to 09:45 AM
     } catch (e) {
       return "--";
     }
@@ -417,6 +430,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           // var userData = snapshot.data?.data?.user;
                           var attendanceData = snapshot.data?.data?.attendance;
 
+                          String displayElapsedTime = '00:00:00';
+                          if (attendanceData != null && attendanceData.isNotEmpty) {
+                            final firstAttendance = attendanceData.first;
+                            if (firstAttendance.checkOut == null && firstAttendance.checkIn != null) {
+                              final checkInTime = _parseDateTime(firstAttendance.checkIn);
+                              if (checkInTime != null) {
+                                final elapsed = DateTime.now().difference(checkInTime);
+                                if (!elapsed.isNegative) {
+                                  displayElapsedTime = '${elapsed.inHours.toString().padLeft(2, '0')}:'
+                                      '${(elapsed.inMinutes % 60).toString().padLeft(2, '0')}:'
+                                      '${(elapsed.inSeconds % 60).toString().padLeft(2, '0')}';
+                                }
+                              }
+                            }
+                          }
+
                           return Column(
                             children: [
                               attendanceData == null || attendanceData.isEmpty
@@ -558,7 +587,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                               ),
                                               UIHelper.verticalSpace(21.h),
                                               Text(
-                                                elapsedTime,
+                                                displayElapsedTime,
                                                 style: TextFontStyle
                                                     .headline32c212B36stylepoppinsW700
                                                     .copyWith(

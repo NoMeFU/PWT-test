@@ -821,11 +821,21 @@ class _CheckBoxListWidgetState extends State<CheckBoxListWidget> {
 }
 
 String formatTime(String inputDateTime) {
-  // Parse the input string into a DateTime object
-  DateTime dateTime = DateTime.parse(inputDateTime);
-
-  // Format the DateTime to the desired format using DateFormat from the intl package
-  String formattedTime = DateFormat('h:mm a').format(dateTime);
-
-  return formattedTime;
+  try {
+    DateTime dateTime;
+    if (!inputDateTime.contains('Z') && !inputDateTime.contains('+') && !inputDateTime.contains('-') && inputDateTime.length >= 19) {
+      String formattedStr = inputDateTime.replaceAll(' ', 'T');
+      dateTime = DateTime.parse('${formattedStr}Z').toLocal();
+    } else {
+      dateTime = DateTime.parse(inputDateTime).toLocal();
+    }
+    return DateFormat('h:mm a').format(dateTime);
+  } catch (e) {
+    try {
+      DateTime dateTime = DateTime.parse(inputDateTime).toLocal();
+      return DateFormat('h:mm a').format(dateTime);
+    } catch (_) {
+      return "--";
+    }
+  }
 }
